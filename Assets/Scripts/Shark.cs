@@ -21,8 +21,7 @@ public class Shark : MonoBehaviour
         m_destination = new Vector3(-m_initialPos.x, m_initialPos.y, -m_initialPos.z);
         m_direction = (m_destination - m_initialPos).normalized;
 
-        Quaternion rotation = Quaternion.LookRotation(m_direction, Vector3.up);
-        transform.rotation = rotation;
+        transform.rotation = Quaternion.LookRotation(m_direction, Vector3.up);
     }
 
     // Update is called once per frame
