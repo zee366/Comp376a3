@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    private int m_health;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +15,9 @@ public class Player : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void TakeDamage(int value) {
+        m_health -= value;
     }
 }
