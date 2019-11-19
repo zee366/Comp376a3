@@ -14,7 +14,7 @@ public class Gold : MonoBehaviour
     {
         m_lifeTime = 20.0f;
         m_rotationSpeed = 90.0f;
-        m_size = Random.Range(0, 3);
+        m_size = Random.Range(1, 4);
 
         switch(m_size) {
             case 1:
@@ -55,21 +55,23 @@ public class Gold : MonoBehaviour
     void OnTriggerEnter(Collider other) {
         if(other.gameObject.tag == "Player") {
             Player player = other.GetComponent<Player>();
-            switch(m_size) {
-                case 1:
-                    player.GainGold(1);
-                    break;
-                case 2:
-                    player.GainGold(2);
-                    break;
-                case 3:
-                    player.GainGold(3);
-                    break;
-                default:
-                    player.GainGold(0);
-                    break;
+            if(player.m_gold == 0) {
+                switch(m_size) {
+                    case 1:
+                        player.m_gold = 1;
+                        break;
+                    case 2:
+                        player.m_gold = 2;
+                        break;
+                    case 3:
+                        player.m_gold = 10;
+                        break;
+                    default:
+                        player.m_gold = 1;
+                        break;
+                }
+                Die();
             }
-            Die();
         }
     }
 }

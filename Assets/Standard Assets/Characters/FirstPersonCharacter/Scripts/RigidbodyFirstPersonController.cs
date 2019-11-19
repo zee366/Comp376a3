@@ -16,7 +16,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             public float StrafeSpeed = 4.0f;    // Speed when walking sideways
             public float RunMultiplier = 2.0f;   // Speed when sprinting
 	        public KeyCode RunKey = KeyCode.LeftShift;
-            public float JumpForce = 100f;
+            public float JumpForce = 10f;
             public AnimationCurve SlopeCurveModifier = new AnimationCurve(new Keyframe(-90.0f, 1.0f), new Keyframe(0.0f, 1.0f), new Keyframe(90.0f, 0.0f));
             [HideInInspector] public float CurrentTargetSpeed = 8f;
 
@@ -94,6 +94,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public Vector3 Velocity
         {
             get { return m_RigidBody.velocity; }
+            set { m_RigidBody.velocity = value; }
         }
 
         public bool Grounded
@@ -144,27 +145,41 @@ namespace UnityStandardAssets.Characters.FirstPerson
             GroundCheck();
             Vector2 input = GetInput();
 
-            if ((Mathf.Abs(input.x) > float.Epsilon || Mathf.Abs(input.y) > float.Epsilon) && (advancedSettings.airControl || m_IsGrounded))
-            {
-                // always move along the camera forward as it is the direction that it being aimed at
-                Vector3 desiredMove = (cam.transform.forward*input.y + cam.transform.right*input.x).normalized;
-                //desiredMove = Vector3.ProjectOnPlane(desiredMove, m_GroundContactNormal).normalized;
-
-                desiredMove.x = desiredMove.x*movementSettings.CurrentTargetSpeed;
-                desiredMove.z = desiredMove.z*movementSettings.CurrentTargetSpeed;
-                desiredMove.y = desiredMove.y*movementSettings.CurrentTargetSpeed;
-                if (m_RigidBody.velocity.sqrMagnitude <
-                    (movementSettings.CurrentTargetSpeed*movementSettings.CurrentTargetSpeed))
-                {
-                    m_RigidBody.AddForce(desiredMove*SlopeMultiplier(), ForceMode.Impulse);
-                }
-            }
+            
 
             if(m_transform.position.y < 50.0f) {
+                if((Mathf.Abs(input.x) > float.Epsilon || Mathf.Abs(input.y) > float.Epsilon) && (advancedSettings.airControl || m_IsGrounded)) {
+                    // always move along the camera forward as it is the direction that it being aimed at
+                    Vector3 desiredMove = (cam.transform.forward * input.y + cam.transform.right * input.x).normalized;
+                    //desiredMove = Vector3.ProjectOnPlane(desiredMove, m_GroundContactNormal).normalized;
+
+                    desiredMove.x = desiredMove.x * movementSettings.CurrentTargetSpeed;
+                    desiredMove.z = desiredMove.z * movementSettings.CurrentTargetSpeed;
+                    desiredMove.y = desiredMove.y * movementSettings.CurrentTargetSpeed;
+                    if(m_RigidBody.velocity.sqrMagnitude <
+                        (movementSettings.CurrentTargetSpeed * movementSettings.CurrentTargetSpeed)) {
+                        m_RigidBody.AddForce(desiredMove * SlopeMultiplier(), ForceMode.Impulse);
+                    }
+                }
                 m_RigidBody.drag = 8f;
+                //advancedSettings.airControl = true;
             }
             else {
+                if((Mathf.Abs(input.x) > float.Epsilon || Mathf.Abs(input.y) > float.Epsilon) && (advancedSettings.airControl || m_IsGrounded)) {
+                    // always move along the camera forward as it is the direction that it being aimed at
+                    Vector3 desiredMove = (cam.transform.forward * input.y + cam.transform.right * input.x).normalized;
+                    desiredMove = Vector3.ProjectOnPlane(desiredMove, m_GroundContactNormal).normalized;
+
+                    desiredMove.x = desiredMove.x * movementSettings.CurrentTargetSpeed;
+                    desiredMove.z = desiredMove.z * movementSettings.CurrentTargetSpeed;
+                    desiredMove.y = desiredMove.y * movementSettings.CurrentTargetSpeed;
+                    if(m_RigidBody.velocity.sqrMagnitude <
+                        (movementSettings.CurrentTargetSpeed * movementSettings.CurrentTargetSpeed)) {
+                        m_RigidBody.AddForce(desiredMove * SlopeMultiplier(), ForceMode.Impulse);
+                    }
+                }
                 m_RigidBody.drag = 1f;
+                //advancedSettings.airControl = false;
             }
 
             if (m_IsGrounded)
@@ -191,7 +206,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 {
                     StickToGroundHelper();
                 }
-                if(m_Jump) {
+                if(m_Jump && m_transform.position.y < 52.0f) {
                     //m_RigidBody.drag = 0f;
                     m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x, m_RigidBody.velocity.y, m_RigidBody.velocity.z);
                     m_RigidBody.AddForce(new Vector3(0f, movementSettings.JumpForce, 0f), ForceMode.Impulse);

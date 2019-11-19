@@ -31,7 +31,7 @@ public class Octopus : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other) {
-        if(other.gameObject.tag == "player") {
+        if(other.gameObject.tag == "Player") {
             other.GetComponent<Player>().TakeDamage(2);
             Die();
         }
