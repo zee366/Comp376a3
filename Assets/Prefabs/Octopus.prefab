@@ -244,7 +244,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5461331813694042321}
   - component: {fileID: 6769639613657200264}
-  - component: {fileID: 173285960772995520}
+  - component: {fileID: 6892073293635819107}
   m_Layer: 0
   m_Name: Octopus
   m_TagString: Untagged
@@ -282,7 +282,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 3.232234
   m_Center: {x: 0, y: 3.4725428, z: 0}
---- !u!114 &173285960772995520
+--- !u!114 &6892073293635819107
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -294,3 +294,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81d609b7927cec24aac63baed8e496bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_projectile: {fileID: 3253058227326898839, guid: 0829564f1e82b1540a042f5cd7b79eaf,
+    type: 3}

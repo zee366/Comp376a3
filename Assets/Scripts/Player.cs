@@ -8,9 +8,13 @@ public class Player : MonoBehaviour
     public int m_lives { get; set; }
     public int m_health { get; set; }
     public int m_gold { get; set; }
+    public float m_airTank { get; set; }
 
     private RigidbodyFirstPersonController rbController;
     private Vector3 spawnPoint;
+
+    [SerializeField]
+    GameObject m_projectile;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +22,7 @@ public class Player : MonoBehaviour
         m_lives = 2;
         m_health = 2;
         m_gold = 0;
+        m_airTank = 30.0f;
         rbController = GetComponent<RigidbodyFirstPersonController>();
         spawnPoint = GameObject.Find("PlayerSpawn").transform.position;
     }
@@ -42,6 +47,19 @@ public class Player : MonoBehaviour
                 UpdateMovement(12, 6, 8);
                 break;
         }
+
+        if(Input.GetButtonDown("Fire1")) {
+            Instantiate(m_projectile, transform.position, Quaternion.AngleAxis(-90.0f, Vector3.right));
+        }
+
+        if(transform.position.y < 50.0f) {
+            m_airTank -= Time.deltaTime;
+        }
+        else if(transform.position.y >= 50.0f) {
+            m_airTank = 30.0f;
+        }
+
+        CheckAirTank();
     }
 
     private void UpdateMovement(int forward, int backward, int strafe) {
@@ -72,5 +90,19 @@ public class Player : MonoBehaviour
 
     public void GainGold(int value) {
         m_gold += value;
+    }
+
+    void CheckAirTank() {
+        if(transform.position.y < 50.0f) {
+            m_airTank -= Time.deltaTime;
+        }
+        else if(transform.position.y >= 50.0f) {
+            m_airTank = 30.0f;
+        }
+
+        if(m_airTank <= 0.0f) {
+            TakeDamage(1);
+            m_airTank = 30.0f;
+        }
     }
 }

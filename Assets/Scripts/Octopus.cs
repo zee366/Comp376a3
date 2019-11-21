@@ -9,12 +9,15 @@ public class Octopus : MonoBehaviour
     private Vector3 m_destination;
     private Vector3 m_direction;
     private GameObject m_player;
+    [SerializeField]
+    GameObject m_projectile;
 
     // Start is called before the first frame update
     void Start()
     {
-        m_speed = 4.0f;
+        m_speed = 6.0f;
         m_player = GameObject.Find("Player");
+        InvokeRepeating("SpawnProjectile", 5.0f, 5.0f);
     }
 
     // Update is called once per frame
@@ -35,5 +38,9 @@ public class Octopus : MonoBehaviour
             other.GetComponent<Player>().TakeDamage(2);
             Die();
         }
+    }
+
+    void SpawnProjectile() {
+        Instantiate(m_projectile, transform.position, Quaternion.identity);
     }
 }
