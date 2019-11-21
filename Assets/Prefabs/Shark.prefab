@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7132799903393909275}
   - component: {fileID: 4472153649475824593}
   - component: {fileID: 3453495121799215516}
-  - component: {fileID: 7850755350761633768}
   m_Layer: 0
   m_Name: great_white_shark
   m_TagString: Untagged
@@ -79,20 +78,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &7850755350761633768
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1941863265090562455}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 1250516326192719629, guid: 2b64c9520057f1d4088412ea3f4d58f4, type: 3}
 --- !u!1 &5813326160254007626
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,9 +166,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7150124173445928868}
   - component: {fileID: 1758577278614004467}
+  - component: {fileID: 7390957601467435194}
   m_Layer: 0
   m_Name: Shark
-  m_TagString: Untagged
+  m_TagString: Shark
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -217,6 +203,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 726b392531b407943a897c54404d364d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &7390957601467435194
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6152200582145467831}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 2.260705
+  m_Height: 22.671967
+  m_Direction: 2
+  m_Center: {x: 0.116803944, y: 2.0760822, z: -1.7239773}
 --- !u!1 &7370988662466189981
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,25 +10,44 @@ public class Shark : MonoBehaviour
     private Vector3 m_destination;
     private Vector3 m_direction;
     private float m_bounds;
+    private bool m_distracted;
+    private float m_detectionRange;
+    private GameController gameController;
 
     // Start is called before the first frame update
     void Start()
     {
+        gameController = GameObject.Find("GameController").GetComponent<GameController>();
         m_lifeTime = 45.0f;
-        m_speed = 5.0f;
+        m_speed = 3.0f + (2 * gameController.m_level);
         m_bounds = 25.0f;
         m_initialPos = GetComponent<Transform>().position;
         m_destination = new Vector3(-m_initialPos.x, m_initialPos.y, -m_initialPos.z);
         m_direction = (m_destination - m_initialPos).normalized;
+        m_distracted = false;
+        m_detectionRange = 20.0f;
 
-        Quaternion rotation = Quaternion.LookRotation(m_direction, Vector3.up);
-        transform.rotation = rotation;
+        transform.rotation = Quaternion.LookRotation(m_direction, Vector3.up);
     }
 
     // Update is called once per frame
     void Update()
     {
         m_lifeTime -= Time.deltaTime;
+
+        GameObject diamond = FindClosestDiamond();
+        if(diamond) {
+            m_distracted = true;
+            m_direction = (diamond.transform.position - transform.position).normalized;
+            transform.rotation = Quaternion.LookRotation(m_direction);
+        }
+        else {
+            if(m_distracted) {
+                m_distracted = false;
+                ResetMovement();
+            }
+        }
+
         transform.position = transform.position + (m_direction * m_speed * Time.deltaTime);
         if(Mathf.Abs(transform.position.x) > m_bounds || Mathf.Abs(transform.position.z) > m_bounds) {
             if(m_lifeTime <= 0.0f)
@@ -46,5 +65,31 @@ public class Shark : MonoBehaviour
         if(other.gameObject.tag == "Player") {
             other.GetComponent<Player>().TakeDamage(1);
         }
+        else if(other.gameObject.tag == "Diamond") {
+            m_distracted = false;
+            ResetMovement();
+        }
+    }
+
+    GameObject FindClosestDiamond() {
+        GameObject[] diamonds;
+        diamonds = GameObject.FindGameObjectsWithTag("Diamond");
+        GameObject closest = null;
+        float distance = Mathf.Infinity;
+        Vector3 position = transform.position;
+        foreach(GameObject go in diamonds) {
+            Vector3 diff = go.transform.position - position;
+            float curDistance = diff.sqrMagnitude;
+            if(curDistance < distance && curDistance < (m_detectionRange * m_detectionRange)) {
+                closest = go;
+                distance = curDistance;
+            }
+        }
+        return closest;
+    }
+
+    void ResetMovement() {
+        transform.rotation = Quaternion.Euler(0.0f, transform.rotation.eulerAngles.y, 0.0f);
+        m_direction = transform.forward;
     }
 }
