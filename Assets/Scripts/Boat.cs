@@ -5,18 +5,13 @@ using UnityEngine;
 public class Boat : MonoBehaviour
 {
     private GameController gameController;
-    // Start is called before the first frame update
+ 
     void Start()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    // When the player reaches the boat, transfer their gold to the total score
     void OnTriggerEnter(Collider other) {
         if(other.gameObject.tag == "Player") {
             Player player = GameObject.Find("Player").GetComponent<Player>();

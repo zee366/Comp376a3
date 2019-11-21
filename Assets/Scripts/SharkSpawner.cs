@@ -5,18 +5,14 @@ using UnityEngine;
 public class SharkSpawner : MonoBehaviour
 {
     public GameObject prefab;
-    // Start is called before the first frame update
+
+    // spawn a shark every 3 seconds
     void Start()
     {
         InvokeRepeating("SpawnShark", 3.0f, 3.0f);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    // choose a random shark spawn point to instantiate a shark
     void SpawnShark() {
         int index = Random.Range(0, transform.childCount);
         Vector3 position = transform.GetChild(index).transform.position;

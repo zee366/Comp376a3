@@ -14,11 +14,10 @@ public class Shark : MonoBehaviour
     private float m_detectionRange;
     private GameController gameController;
 
-    // Start is called before the first frame update
     void Start()
     {
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
-        m_lifeTime = 45.0f;
+        m_lifeTime = 25.0f;
         m_speed = 3.0f + (2 * gameController.m_level);
         m_bounds = 25.0f;
         m_initialPos = GetComponent<Transform>().position;
@@ -33,8 +32,12 @@ public class Shark : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Sharks live for 25 seconds
         m_lifeTime -= Time.deltaTime;
 
+        // every frame, try and find the closest diamond thrown by the player (within the shark's detection range)
+        // change direction towards the diamond if one is found
+        // otherwise resum straight line movement
         GameObject diamond = FindClosestDiamond();
         if(diamond) {
             m_distracted = true;
@@ -48,6 +51,7 @@ public class Shark : MonoBehaviour
             }
         }
 
+        // move in a straight line and reappear on the opposite side of the level if they hit a wall
         transform.position = transform.position + (m_direction * m_speed * Time.deltaTime);
         if(Mathf.Abs(transform.position.x) > m_bounds || Mathf.Abs(transform.position.z) > m_bounds) {
             if(m_lifeTime <= 0.0f)
@@ -61,6 +65,8 @@ public class Shark : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // deal 1 damage to the player on contact
+    // reset to straight line movememnt on contact with a diamond
     void OnTriggerEnter(Collider other) {
         if(other.gameObject.tag == "Player") {
             other.GetComponent<Player>().TakeDamage(1);
@@ -71,6 +77,7 @@ public class Shark : MonoBehaviour
         }
     }
 
+    // look for the closest diamond within detection range
     GameObject FindClosestDiamond() {
         GameObject[] diamonds;
         diamonds = GameObject.FindGameObjectsWithTag("Diamond");
@@ -88,6 +95,7 @@ public class Shark : MonoBehaviour
         return closest;
     }
 
+    // reset to straight line horizontal movement
     void ResetMovement() {
         transform.rotation = Quaternion.Euler(0.0f, transform.rotation.eulerAngles.y, 0.0f);
         m_direction = transform.forward;

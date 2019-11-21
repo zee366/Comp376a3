@@ -14,7 +14,6 @@ public class GameController : MonoBehaviour
     private int m_score;
     private float m_airTank;
 
-    // Start is called before the first frame update
     void Start()
     {
         m_level = 1;
@@ -23,9 +22,11 @@ public class GameController : MonoBehaviour
         m_text2 = GameObject.Find("Text2").GetComponent<Text>();
         m_score = 0;
 
+        // increase difficulty every 30 seconds
         InvokeRepeating("IncreaseLevel", 30.0f, 30.0f);
     }
 
+    // Every frame, update the UI with current player attribuyes and total score
     void Update()
     {
         m_lives = m_player.m_lives;

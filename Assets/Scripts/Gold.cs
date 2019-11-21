@@ -9,13 +9,14 @@ public class Gold : MonoBehaviour
     private int m_size;
 
     public GameObject particle;
-    // Start is called before the first frame update
+
     void Start()
     {
         m_lifeTime = 20.0f;
         m_rotationSpeed = 90.0f;
         m_size = Random.Range(1, 4);
 
+        // scale the gold object based on it's size
         switch(m_size) {
             case 1:
                 transform.localScale *= 1;
@@ -35,23 +36,26 @@ public class Gold : MonoBehaviour
         Instantiate(particle, transform.position, rotation);
     }
 
-    // Update is called once per frame
+
     void Update()
     {
+        // reduce the gold's lifetime and kill it if life is over
         m_lifeTime -= Time.deltaTime;
         if(m_lifeTime <= 0.0f)
             Die();
 
+        // spin the gold coin
         float angle = m_rotationSpeed * Time.deltaTime;
         transform.rotation *= Quaternion.AngleAxis(angle, Vector3.up);
     }
 
     void Die() {
-        // stop emitting not working
+        // stop emitting bubbles when the coin dies
         particle.GetComponent<ParticleSystem>().Stop(true, ParticleSystemStopBehavior.StopEmitting);
         Destroy(gameObject);
     }
 
+    // when the player touches the gold, transfer it to them and despawn the gold object
     void OnTriggerEnter(Collider other) {
         if(other.gameObject.tag == "Player") {
             Player player = other.GetComponent<Player>();

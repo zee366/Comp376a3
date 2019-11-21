@@ -12,17 +12,18 @@ public class Octopus : MonoBehaviour
     [SerializeField]
     GameObject m_projectile;
 
-    // Start is called before the first frame update
     void Start()
     {
         m_speed = 6.0f;
         m_player = GameObject.Find("Player");
+
+        // shoot a projectile at the player every 5 seconds
         InvokeRepeating("SpawnProjectile", 5.0f, 5.0f);
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // find the player's position and chase them
         m_destination = m_player.GetComponent<Transform>().position;
         m_direction = (m_destination - transform.position).normalized;
         transform.position += m_direction * m_speed * Time.deltaTime;
@@ -33,6 +34,7 @@ public class Octopus : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // kill the player (player only has 2 life) on contact, then despawn
     void OnTriggerEnter(Collider other) {
         if(other.gameObject.tag == "Player") {
             other.GetComponent<Player>().TakeDamage(2);
