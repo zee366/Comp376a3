@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityStandardAssets.Characters.FirstPerson;
 
 public class Player : MonoBehaviour
@@ -30,6 +31,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // change the player's movement speed depending on how much gold they are carrying
         switch(m_gold) {
             case 0:
                 UpdateMovement(12, 6, 8);
@@ -48,15 +50,9 @@ public class Player : MonoBehaviour
                 break;
         }
 
+        // shoot projectile on left mouse click
         if(Input.GetButtonDown("Fire1")) {
             Instantiate(m_projectile, transform.position, Quaternion.AngleAxis(-90.0f, Vector3.right));
-        }
-
-        if(transform.position.y < 50.0f) {
-            m_airTank -= Time.deltaTime;
-        }
-        else if(transform.position.y >= 50.0f) {
-            m_airTank = 30.0f;
         }
 
         CheckAirTank();
@@ -68,30 +64,36 @@ public class Player : MonoBehaviour
         rbController.movementSettings.StrafeSpeed = strafe;
     }
 
+    // reduce health by damage taken (health is the number of air tanks left)
+    // respawn if the player has additional lives, otherwise game over
     public void TakeDamage(int value) {
         m_health -= value;
         if(m_health <= 0) {
-            m_lives--;
-            if(m_lives <= 0) {
-                // game over
+            if(m_lives > 0) {
+                Respawn();
             }
             else {
-                Respawn();
+                SceneManager.LoadScene("GameOver");
             }
         }
     }
 
+    // reset the player's carried gold, reduce lives by 1 and respawn on the boat
     public void Respawn() {
+        m_lives--;
         m_health = 2;
         m_gold = 0;
         transform.position = spawnPoint;
         rbController.Velocity = new Vector3(0.0f, 0.0f, 0.0f);
     }
 
+    // called when the palyer touches a gold object
     public void GainGold(int value) {
         m_gold += value;
     }
 
+    // reduce air in the tank while they are underwater, or refill it if they go above water
+    // if air runs out while underwater, take 1 damage
     void CheckAirTank() {
         if(transform.position.y < 50.0f) {
             m_airTank -= Time.deltaTime;

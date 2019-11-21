@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-//using UnityStandardAssets.CrossPlatformInput;
 
 namespace UnityStandardAssets.Characters.FirstPerson
 {
@@ -133,7 +132,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             RotateView();
 
-            //if (Input.GetButtonDown("Jump") && !m_Jump) {
             if(Input.GetButtonDown("Jump")) {
                 m_Jump = true;
             }
@@ -151,7 +149,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 if((Mathf.Abs(input.x) > float.Epsilon || Mathf.Abs(input.y) > float.Epsilon) && (advancedSettings.airControl || m_IsGrounded)) {
                     // always move along the camera forward as it is the direction that it being aimed at
                     Vector3 desiredMove = (cam.transform.forward * input.y + cam.transform.right * input.x).normalized;
-                    //desiredMove = Vector3.ProjectOnPlane(desiredMove, m_GroundContactNormal).normalized;
 
                     desiredMove.x = desiredMove.x * movementSettings.CurrentTargetSpeed;
                     desiredMove.z = desiredMove.z * movementSettings.CurrentTargetSpeed;
@@ -162,7 +159,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     }
                 }
                 m_RigidBody.drag = 8f;
-                //advancedSettings.airControl = true;
             }
             else {
                 if((Mathf.Abs(input.x) > float.Epsilon || Mathf.Abs(input.y) > float.Epsilon) && (advancedSettings.airControl || m_IsGrounded)) {
@@ -179,16 +175,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     }
                 }
                 m_RigidBody.drag = 1f;
-                //advancedSettings.airControl = false;
             }
 
             if (m_IsGrounded)
             {
-                //m_RigidBody.drag = 5f;
-
                 if (m_Jump)
                 {
-                    //m_RigidBody.drag = 0f;
                     m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x, m_RigidBody.velocity.y, m_RigidBody.velocity.z);
                     m_RigidBody.AddForce(new Vector3(0f, movementSettings.JumpForce, 0f), ForceMode.Impulse);
                     m_Jumping = true;
@@ -201,13 +193,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             else
             {
-                //m_RigidBody.drag = 0f;
                 if (m_PreviouslyGrounded && !m_Jumping)
                 {
                     StickToGroundHelper();
                 }
                 if(m_Jump && m_transform.position.y < 52.0f) {
-                    //m_RigidBody.drag = 0f;
                     m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x, m_RigidBody.velocity.y, m_RigidBody.velocity.z);
                     m_RigidBody.AddForce(new Vector3(0f, movementSettings.JumpForce, 0f), ForceMode.Impulse);
                     m_Jumping = true;
@@ -274,7 +264,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
         }
 
-        /// sphere cast down just beyond the bottom of the capsule to see if the capsule is colliding round the bottom
+        // sphere cast down just beyond the bottom of the capsule to see if the capsule is colliding round the bottom
         private void GroundCheck()
         {
             m_PreviouslyGrounded = m_IsGrounded;

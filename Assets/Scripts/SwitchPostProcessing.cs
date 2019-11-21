@@ -18,6 +18,7 @@ public class SwitchPostProcessing : MonoBehaviour
         water = GameObject.Find("WaterSurface").GetComponent<Water>();
     }
 
+    // switch rendering to underwater (blurry) when player goes underwater
     void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player")) {
@@ -26,6 +27,7 @@ public class SwitchPostProcessing : MonoBehaviour
         }
     }
 
+    // switch rendering to normal when player goes above water
     void OnTriggerExit(Collider other) {
         if(other.CompareTag("Player")) {
             cameraFx.profile = normal;
