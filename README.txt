@@ -2,6 +2,8 @@ Comp 376 Assignment 3
 by Jason Brennan - 27793928
 Submitted Nov 21, 2019
 
+Gameplay video: https://youtu.be/yrVz-Kcu3CE  (I uploaded to youtube because the file size of the video was too big for a moodle submission)
+
 Controls:
 	Use the mouse to look around
 	Use WASD keys to move the character
